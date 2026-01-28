@@ -1,59 +1,58 @@
-<title>Rens Kargo | Kargolar</title>
-<div class="app-content" style="margin-top: 2%;">
-  <flexi-grid
-    [data]="data()!"
-    [dataBinding]="true"
-    [total]="total()!"
-    [loading]="loading()"
-    [showCaption]="true"
-    captionTitle="Kargo Listesi"
-    [showCommandColumn]="true"
-    [commandColumnTemplate]="commandColumnTemplate"
-    (onRefresh)="result.reload()"
-    (dataStateChange)="dataStateChange($event)"
-    [captionTemplate]="captionTemplate"
-    [showExportExcelBtn]="true"
-  >
-    <ng-template #captionTemplate>
-      <flexi-button
-        btnSize="small"
-        btnColor="primary"
-        title="Kargo Ekle"
-        flexiTooltip
-        btnIcon="add"
-      />
-    </ng-template>
-
-    <flexi-grid-column
-      field="createdAt"
-      title="Kayıt Tarihi"
-      filterType="date"
-      format="dd MMM yyyy HH:mm:ss"
+<app-blank pageTitle="Kargolar"></app-blank>
+<div style="margin-top: 2%;"><flexi-grid
+  [data]="data()!"
+  [dataBinding]="true"
+  [total]="total()!"
+  [loading]="loading()"
+  [showCaption]="true"
+  captionTitle="Kargo Listesi"
+  [showCommandColumn]="true"
+  [commandColumnTemplate]="commandColumnTemplate"
+  (onRefresh)="result.reload()"
+  (dataStateChange)="dataStateChange($event)"
+  [captionTemplate]="captionTemplate"
+  [showExportExcelBtn]="true"
+>
+  <ng-template #captionTemplate>
+    <flexi-button
+      btnSize="small"
+      btnColor="primary"
+      title="Kargo Ekle"
+      flexiTooltip
+      btnIcon="add"
     />
-    <flexi-grid-column field="gonderenFullName" title="Gönderen Adı" />
-    <flexi-grid-column field="aliciFullName" title="Alıcı Adı" />
-    <flexi-grid-column field="addressCity" title="Teslim Şehir" />
-    <flexi-grid-column field="addressTown" title="Teslim İlçe" />
-    <flexi-grid-column field="kargoTipiName" title="Kargo Tipi" />
-    <flexi-grid-column field="agirlik" title="Ağırlık (kg)" />
-    <flexi-grid-column field="kargoDurumName" title="Kargo Durumu" />
-    <flexi-grid-column field="createUserName" title="Kaydeden Kul." />
-    <flexi-grid-column
-      field="updatedAt"
-      title="Güncelleme Tar."
-      filterType="date"
-      format="dd MMM yyyy HH:mm:ss"
-    />
-    <flexi-grid-column field="updateUserName" title="Güncelleyen Kul." />
+  </ng-template>
 
-    <ng-template #commandColumnTemplate let-item>
-      <flexi-button
-        btnSize="x-small"
-        btnIcon="delete"
-        btnColor="danger"
-        title="Sil"
-        flexiTooltip
-      />
-    </ng-template>
-  </flexi-grid>
+  <flexi-grid-column
+    field="createdAt"
+    title="Kayıt Tarihi"
+    filterType="date"
+    format="dd MMM yyyy HH:mm:ss"
+  />
+  <flexi-grid-column field="gonderenFullName" title="Gönderen Adı" />
+  <flexi-grid-column field="aliciFullName" title="Alıcı Adı" />
+  <flexi-grid-column field="addressCity" title="Teslim Şehir" />
+  <flexi-grid-column field="addressTown" title="Teslim İlçe" />
+  <flexi-grid-column field="kargoTipiName" title="Kargo Tipi" />
+  <flexi-grid-column field="agirlik" title="Ağırlık (kg)" />
+  <flexi-grid-column field="kargoDurumName" title="Kargo Durumu" />
+  <flexi-grid-column field="createUserName" title="Kaydeden Kul." />
+  <flexi-grid-column
+    field="updatedAt"
+    title="Güncelleme Tar."
+    filterType="date"
+    format="dd MMM yyyy HH:mm:ss"
+  />
+  <flexi-grid-column field="updateUserName" title="Güncelleyen Kul." />
+
+  <ng-template #commandColumnTemplate let-item>
+    <flexi-button
+      btnSize="x-small"
+      btnIcon="delete"
+      btnColor="danger"
+      title="Sil"
+      flexiTooltip
+    />
+  </ng-template>
+</flexi-grid>
 </div>

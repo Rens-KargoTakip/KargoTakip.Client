@@ -14,9 +14,10 @@ import { ODataModel } from '../../models/odata.model';
 import { FlexiGridModule, FlexiGridService, StateModel } from 'flexi-grid';
 import { BreadcrumbService } from '../../servcies/breadcrumb.service';
 import { BreadCrumbModel } from '../../models/breadcrumb.model';
+import BlankComponent from '../../components/blank/blank.component';
 
 @Component({
-  imports: [RouterLink, FlexiGridModule],
+  imports: [RouterLink, FlexiGridModule,BlankComponent],
   templateUrl: './kargolar.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

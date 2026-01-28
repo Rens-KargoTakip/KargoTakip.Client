@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { BreadcrumbService } from '../servcies/breadcrumb.service';
+import BlankComponent from '../components/blank/blank.component';
 
 @Component({
   imports: [RouterOutlet, RouterLink],

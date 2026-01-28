@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@
 import { RouterLinkWithHref } from "@angular/router";
 import { BreadCrumbModel } from '../../models/breadcrumb.model';
 import { BreadcrumbService } from '../../servcies/breadcrumb.service';
+import BlankComponent from '../../components/blank/blank.component';
 
 @Component({
-  imports: [RouterLinkWithHref],
+  imports: [RouterLinkWithHref,BlankComponent],
   templateUrl: './home.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
