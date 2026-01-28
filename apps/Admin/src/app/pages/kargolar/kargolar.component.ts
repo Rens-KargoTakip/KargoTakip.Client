@@ -17,7 +17,7 @@ import { BreadCrumbModel } from '../../models/breadcrumb.model';
 import BlankComponent from '../../components/blank/blank.component';
 
 @Component({
-  imports: [RouterLink, FlexiGridModule,BlankComponent],
+  imports: [RouterLink, FlexiGridModule, BlankComponent],
   templateUrl: './kargolar.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,19 +49,12 @@ export default class KargolarComponent {
    *
    */
   constructor() {
-    const breadcrumbs: BreadCrumbModel[] = [
-      {
-        name: 'Ana Sayfa',
-        routerLink: '/',
-        icon: 'home',
-      },
-      {
-        name: 'Kargolar',
-        routerLink: '/kargolar',
-        icon: 'quick_reorder',
-      },
-    ];
-    this.#breadcrumb.data.set(breadcrumbs);
+    this.#breadcrumb.reset();
+    this.#breadcrumb.addBreadcrumbLink(
+      'Kargolar',
+      '/kargolar',
+      'quick_reorder'
+    );
   }
 
   dataStateChange(event: StateModel) {

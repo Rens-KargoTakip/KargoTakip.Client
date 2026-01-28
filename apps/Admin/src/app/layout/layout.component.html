@@ -12,10 +12,10 @@
             [routerLink]="val.routerLink"
             class="nav-link d-flex align-items-center"
           >
-            <span class="material-symbols-outlined " style="padding-right: 4px;">
-              {{val.icon}}
+            <span class="material-symbols-outlined" style="padding-right: 4px">
+              {{ val.icon }}
             </span>
-            <span>{{val.name}}</span>
+            <span>{{ val.name }}</span>
           </a>
           @if(!$last){
           <span class="nav-item d-none d-md-block">\</span>
@@ -26,7 +26,6 @@
       <!--end::Start Navbar Links-->
       <!--begin::End Navbar Links-->
       <ul class="navbar-nav ms-auto">
-
         <li class="nav-item dropdown user-menu">
           <a
             href="#"
@@ -126,12 +125,16 @@
   <!--begin::Footer-->
   <footer class="app-footer">
     <!--begin::To the end-->
-    <div class="float-end d-none d-sm-inline">Anything you want</div>
+    <div class="float-end d-none d-sm-inline">{{time()}}</div>
     <!--end::To the end-->
     <!--begin::Copyright-->
     <strong>
-      Copyright &copy; 2014-2024&nbsp;
-      <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a
+      Copyright &copy; 2026&nbsp;
+      <a
+        href="https://github.com/omeruren"
+        target="_blank"
+        class="text-decoration-none"
+        >Omer Uren</a
       >.
     </strong>
     All rights reserved.
