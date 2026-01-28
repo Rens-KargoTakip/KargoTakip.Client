@@ -12,6 +12,8 @@ import { RouterLink } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { ODataModel } from '../../models/odata.model';
 import { FlexiGridModule, FlexiGridService, StateModel } from 'flexi-grid';
+import { BreadcrumbService } from '../../servcies/breadcrumb.service';
+import { BreadCrumbModel } from '../../models/breadcrumb.model';
 
 @Component({
   imports: [RouterLink, FlexiGridModule],
@@ -40,6 +42,26 @@ export default class KargolarComponent {
 
   #http = inject(HttpClient);
   #grid = inject(FlexiGridService);
+  #breadcrumb = inject(BreadcrumbService);
+
+  /**
+   *
+   */
+  constructor() {
+    const breadcrumbs: BreadCrumbModel[] = [
+      {
+        name: 'Ana Sayfa',
+        routerLink: '/',
+        icon: 'home',
+      },
+      {
+        name: 'Kargolar',
+        routerLink: '/kargolar',
+        icon: 'quick_reorder',
+      },
+    ];
+    this.#breadcrumb.data.set(breadcrumbs);
+  }
 
   dataStateChange(event: StateModel) {
     this.state.set(event);

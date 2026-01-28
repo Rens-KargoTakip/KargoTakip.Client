@@ -1,9 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  inject,
   ViewEncapsulation,
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { BreadcrumbService } from '../servcies/breadcrumb.service';
 
 @Component({
   imports: [RouterOutlet, RouterLink],
@@ -11,4 +14,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export default class LayoutComponent {}
+export default class LayoutComponent {
+  #breadcrumb = inject(BreadcrumbService);
+
+  breadcrumbs = computed(() => this.#breadcrumb.data());
+}
