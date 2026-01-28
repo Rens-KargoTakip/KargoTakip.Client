@@ -1,6 +1,9 @@
 export class KargoModel {
+  id: string = '';
   gonderen: KargoKisiModel = new KargoKisiModel();
+  gonderenFullName: string = '';
   alici: KargoKisiModel = new KargoKisiModel();
+  aliciFullName: string = '';
   address: KargoTeslimAddress = new KargoTeslimAddress();
   kargoInformations: KargoInformations = new KargoInformations();
 }

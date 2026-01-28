@@ -13,6 +13,7 @@
     (dataStateChange)="dataStateChange($event)"
     [captionTemplate]="captionTemplate"
     [showExportExcelBtn]="true"
+    [exportExcelButtonClick]="exportExcel.bind(this)"
   >
     <ng-template #captionTemplate>
       <flexi-button
@@ -53,7 +54,7 @@
         btnIcon="delete"
         btnColor="danger"
         title="Sil"
-        flexiTooltip
+        flexiTooltip (click)="delete(item)"
       />
     </ng-template>
   </flexi-grid>
