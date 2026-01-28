@@ -11,7 +11,17 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'kargolar',
-        loadComponent: () => import('./pages/kargolar/kargolar.component'),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./pages/kargolar/kargolar.component'),
+          },
+          {
+            path: 'add',
+            loadComponent: () =>
+              import('./pages/kargolar/create/create-cargo.component'),
+          },
+        ],
       },
     ],
   },

@@ -7,7 +7,7 @@
       <!--begin::Start Navbar Links-->
       <ul class="navbar-nav">
         @for(val of breadcrumbs(); track val.routerLink){
-        <li class="nav-item d-flex">
+        <li class="nav-item d-flex align-items-center">
           <a
             [routerLink]="val.routerLink"
             class="nav-link d-flex align-items-center"
@@ -76,7 +76,7 @@
       <a href="./index.html" class="brand-link">
         <!--begin::Brand Image-->
         <img
-          src="//assets/img/AdminLTELogo.png"
+          src="/assets/img/AdminLTELogo.png"
           alt="AdminLTE Logo"
           class="brand-image opacity-75 shadow"
         />

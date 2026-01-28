@@ -8,16 +8,17 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { ODataModel } from '../../models/odata.model';
 import { FlexiGridModule, FlexiGridService, StateModel } from 'flexi-grid';
 import { BreadcrumbService } from '../../servcies/breadcrumb.service';
-import { BreadCrumbModel } from '../../models/breadcrumb.model';
 import BlankComponent from '../../components/blank/blank.component';
+import { RouterLink } from '@angular/router';
+import { FlexiButtonComponent } from 'flexi-button';
+import { API } from '../../constants';
 
 @Component({
-  imports: [RouterLink, FlexiGridModule, BlankComponent],
+  imports: [RouterLink, FlexiGridModule, BlankComponent, FlexiButtonComponent],
   templateUrl: './kargolar.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,7 +27,7 @@ export default class KargolarComponent {
   result = resource({
     request: () => this.state(),
     loader: async () => {
-      let endpoint = 'https://localhost:7236/odata/kargolar?$count=true';
+      let endpoint = `${API}/odata/kargolar?$count=true`;
       const odataEndpoint = this.#grid.getODataEndpoint(this.state());
       endpoint += '&' + odataEndpoint;
       var res = await lastValueFrom(
