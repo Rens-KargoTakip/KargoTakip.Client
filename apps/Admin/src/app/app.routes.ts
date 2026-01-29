@@ -21,6 +21,11 @@ export const appRoutes: Route[] = [
             loadComponent: () =>
               import('./pages/kargolar/create/create-cargo.component'),
           },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./pages/kargolar/create/create-cargo.component'),
+          },
         ],
       },
     ],

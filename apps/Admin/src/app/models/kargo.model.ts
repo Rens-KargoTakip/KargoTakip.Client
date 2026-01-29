@@ -6,6 +6,7 @@ export class KargoModel {
   aliciFullName: string = '';
   address: KargoTeslimAddress = new KargoTeslimAddress();
   kargoInformations: KargoInformations = new KargoInformations();
+  kargoDurumValue: number = 0;
 }
 export class KargoKisiModel {
   firstName: string = '';
@@ -23,7 +24,6 @@ export class KargoTeslimAddress {
   fullAddress: string = '';
 }
 export class KargoInformations {
-  kargoInformations: string = '';
   kargoTipiValue: number = 1;
   agirlik: number = 1;
 }

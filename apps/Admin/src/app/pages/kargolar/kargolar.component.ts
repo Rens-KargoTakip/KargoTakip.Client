@@ -11,18 +11,32 @@ import {
 } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { ODataModel } from '../../models/odata.model';
-import { FlexiGridModule, FlexiGridService, StateModel } from 'flexi-grid';
+import {
+  FlexiGridFilterDataModel,
+  FlexiGridModule,
+  FlexiGridService,
+  StateModel,
+} from 'flexi-grid';
 import { BreadcrumbService } from '../../servcies/breadcrumb.service';
 import BlankComponent from '../../components/blank/blank.component';
 import { RouterLink } from '@angular/router';
-import { FlexiButtonComponent } from 'flexi-button';
 import { API } from '../../constants';
 import { FlexiToastService } from 'flexi-toast';
 import { KargoModel } from '../../models/kargo.model';
 import { ResultModel } from '../../models/result.model';
+import { CommonModule } from '@angular/common';
+import { FlexiPopupModule } from 'flexi-popup';
+import { FlexiButtonComponent } from 'flexi-button';
 
 @Component({
-  imports: [RouterLink, FlexiGridModule, BlankComponent, FlexiButtonComponent],
+  imports: [
+    RouterLink,
+    FlexiGridModule,
+    BlankComponent,
+    FlexiButtonComponent,
+    CommonModule,
+    FlexiPopupModule,
+  ],
   templateUrl: './kargolar.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,11 +59,30 @@ export default class KargolarComponent {
   readonly total = computed(() => this.result.value()?.['@odata.count'] ?? 0);
   readonly loading = linkedSignal(() => this.result.isLoading());
   readonly state = signal<StateModel>(new StateModel());
+  isPopupVisible = false;
+  readonly popupLoading = signal<boolean>(false);
+
+  readonly durumFilterData = signal<FlexiGridFilterDataModel[]>([
+    {
+      name: 'Hazırlanıyor',
+      value: 0,
+    },
+    {
+      name: 'Araca teslim edildi',
+      value: 1,
+    },
+  ]);
+
+  readonly durumUpdateRequest = signal<{ id: string; durumValue: number }>({
+    id: '',
+    durumValue: 0,
+  });
 
   #http = inject(HttpClient);
   #grid = inject(FlexiGridService);
   #breadcrumb = inject(BreadcrumbService);
   #toast = inject(FlexiToastService);
+
   /**
    *
    */
@@ -70,6 +103,7 @@ export default class KargolarComponent {
     var res = await lastValueFrom(this.#http.get<ODataModel<any[]>>(endpoint));
     this.#grid.exportDataToExcel(res.value, 'Kargo Listesi');
   }
+
   delete(item: KargoModel) {
     const endpoint = `${API}/kargolar/${item.id}`;
     this.#toast.showSwal(
@@ -84,5 +118,39 @@ export default class KargolarComponent {
         });
       }
     );
+  }
+
+  getDurumClass(durum: string) {
+    if (durum === 'Hazırlanıyor') return 'alert-warning';
+
+    return '';
+  }
+
+  getAgirlikTotal() {
+    const agirliklar = this.data().map((p) => p.agirlik);
+    let total = 0;
+    agirliklar.forEach((e) => (total += e));
+    return total;
+  }
+
+  openUpdateDurumPopup(item: KargoModel) {
+    this.durumUpdateRequest().id = item.id;
+    this.durumUpdateRequest().durumValue = item.kargoDurumValue;
+    this.isPopupVisible = true;
+  }
+
+  updateDurum() {
+    this.popupLoading.set(true);
+    this.#http
+      .put<ResultModel<string>>(
+        `${API}/kargolar/update-status`,
+        this.durumUpdateRequest()
+      )
+      .subscribe((res) => {
+        this.popupLoading.set(false);
+        this.isPopupVisible = false;
+        this.result.reload();
+        this.#toast.showToast('Başarılı', res.data!, 'info');
+      });
   }
 }

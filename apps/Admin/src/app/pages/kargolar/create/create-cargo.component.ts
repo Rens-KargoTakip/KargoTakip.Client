@@ -1,7 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
+  linkedSignal,
+  resource,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
@@ -17,6 +20,8 @@ import { HttpClient } from '@angular/common/http';
 import { ResultModel } from '../../../models/result.model';
 import { FlexiToastService } from 'flexi-toast';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   imports: [
@@ -31,13 +36,30 @@ import { Location } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class CreateCargoComponent {
-  data = signal<KargoModel>(new KargoModel());
-  loading = signal<boolean>(false);
+  readonly id = signal<string>('');
 
-  #breadcrumb = inject(BreadcrumbService);
-  #http = inject(HttpClient);
-  #toast = inject(FlexiToastService);
-  #location = inject(Location);
+  readonly data = linkedSignal(() => this.result?.value() ?? new KargoModel());
+
+  readonly loading = linkedSignal(() => this.result?.isLoading() ?? false);
+  readonly pageTitle = computed(() =>
+    this.id() ? 'Kargo Güncelle' : 'Kargo Ekle'
+  );
+
+  readonly result = resource({
+    request: () => this.id(),
+    loader: async () => {
+      const res = await lastValueFrom(
+        this.#http.get<ResultModel<KargoModel>>(`${API}/kargolar/${this.id()}`)
+      );
+      return res.data!;
+    },
+  });
+
+  readonly #breadcrumb = inject(BreadcrumbService);
+  readonly #http = inject(HttpClient);
+  readonly #toast = inject(FlexiToastService);
+  readonly #location = inject(Location);
+  readonly #activated = inject(ActivatedRoute);
   /**
    *
    */
@@ -48,19 +70,46 @@ export default class CreateCargoComponent {
       '/kargolar',
       'quick_reorder'
     );
-    this.#breadcrumb.addBreadcrumbLink('Kargolar', '/kargolar/add', 'add');
+    this.#activated.params.subscribe((res) => {
+      {
+        if (res['id']) {
+          this.id.set(res['id']);
+          this.#breadcrumb.addBreadcrumbLink(
+            this.id(),
+            `/kargolar/edit/${this.id()}`,
+            'edit'
+          );
+        } else {
+          this.#breadcrumb.addBreadcrumbLink(
+            'Kargolar',
+            '/kargolar/add',
+            'add'
+          );
+        }
+      }
+    });
   }
   save(form: NgForm) {
     if (form.valid) {
       const endpoint = `${API}/kargolar`;
       this.loading.set(true);
-      this.#http
-        .post<ResultModel<string>>(endpoint, this.data())
-        .subscribe((res) => {
-          this.#toast.showToast('Başarılı', res.data!, 'success');
-          this.loading.set(false);
-          this.#location.back();
-        });
+      if (this.id()) {
+        this.#http
+          .put<ResultModel<string>>(endpoint, this.data())
+          .subscribe((res) => {
+            this.#toast.showToast('Başarılı', res.data!, 'info');
+            this.loading.set(false);
+            this.#location.back();
+          });
+      } else {
+        this.#http
+          .post<ResultModel<string>>(endpoint, this.data())
+          .subscribe((res) => {
+            this.#toast.showToast('Başarılı', res.data!, 'success');
+            this.loading.set(false);
+            this.#location.back();
+          });
+      }
     } else {
       this.#toast.showToast(
         'Uyarı',
