@@ -78,7 +78,9 @@
       />
       <flexi-grid-column field="updateUserName" title="Gün.Kul." />
       <ng-template #commandColumnTemplate let-item>
-    <flexi-button
+        @if(item.kargoDurumValue==0) {
+
+        <flexi-button
           btnSize="x-small"
           btnIcon="edit"
           btnColor="primary"
@@ -95,6 +97,8 @@
           flexiTooltip
           (click)="delete(item)"
         />
+
+        }
       </ng-template>
     </flexi-grid>
   </div>

@@ -181,13 +181,13 @@
               <div class="col-md-3 col-12">
                 <div class="form-group mt-2">
                   <label>Şehir <span class="text-danger">*</span></label>
-                  <input
-                    type="text"
-                    class="form-control"
+                  <flexi-select
+                    [data]="cities()"
+                    label="il_adi"
+                    value="il_adi"
                     [(ngModel)]="data().address.city"
                     name="addressCity"
-                    required
-                    minlength="3"
+                    (selected)="getTowns($event)"
                   />
                   <div class="invalid-feedback">Geçerli bir Şehir girin</div>
                 </div>
@@ -195,13 +195,12 @@
               <div class="col-md-3 col-12">
                 <div class="form-group mt-2">
                   <label>İlçe <span class="text-danger">*</span></label>
-                  <input
-                    type="text"
-                    class="form-control"
+                  <flexi-select
+                    [data]="towns()"
+                    label="ilce_adi"
+                    value="ilce_adi"
                     [(ngModel)]="data().address.town"
                     name="addressTown"
-                    required
-                    minlength="3"
                   />
                   <div class="invalid-feedback">Geçerli bir İlçe girin</div>
                 </div>

@@ -22,12 +22,15 @@ import { FlexiToastService } from 'flexi-toast';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
+import { FlexiSelectModule } from 'flexi-select';
+import { CityModel, TownModel } from '../../../models/city.model';
 
 @Component({
   imports: [
     FormsModule,
     BlankComponent,
     FlexiStepperModule,
+    FlexiSelectModule,
     FormValidateDirective,
     NgxMaskDirective,
   ],
@@ -36,34 +39,11 @@ import { lastValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class CreateCargoComponent {
-  readonly id = signal<string>('');
-
-  readonly data = linkedSignal(() => this.result?.value() ?? new KargoModel());
-
-  readonly loading = linkedSignal(() => this.result?.isLoading() ?? false);
-  readonly pageTitle = computed(() =>
-    this.id() ? 'Kargo Güncelle' : 'Kargo Ekle'
-  );
-
-  readonly result = resource({
-    request: () => this.id(),
-    loader: async () => {
-      const res = await lastValueFrom(
-        this.#http.get<ResultModel<KargoModel>>(`${API}/kargolar/${this.id()}`)
-      );
-      return res.data!;
-    },
-  });
-
-  readonly #breadcrumb = inject(BreadcrumbService);
-  readonly #http = inject(HttpClient);
-  readonly #toast = inject(FlexiToastService);
-  readonly #location = inject(Location);
-  readonly #activated = inject(ActivatedRoute);
   /**
    *
    */
   constructor() {
+    this.getCities();
     this.#breadcrumb.reset();
     this.#breadcrumb.addBreadcrumbLink(
       'Kargolar',
@@ -88,6 +68,52 @@ export default class CreateCargoComponent {
         }
       }
     });
+  }
+
+  readonly id = signal<string>('');
+
+  readonly data = linkedSignal(() => this.result?.value() ?? new KargoModel());
+
+  readonly loading = linkedSignal(() => this.result?.isLoading() ?? false);
+  readonly pageTitle = computed(() =>
+    this.id() ? 'Kargo Güncelle' : 'Kargo Ekle'
+  );
+
+  readonly cities = signal<CityModel[]>([]);
+  readonly towns = signal<TownModel[]>([]);
+
+  readonly result = resource({
+    request: () => this.id(),
+    loader: async () => {
+      if (this.id()) {
+        const res = await lastValueFrom(
+          this.#http.get<ResultModel<KargoModel>>(
+            `${API}/kargolar/${this.id()}`
+          )
+        );
+        return res.data!;
+      }
+      return undefined;
+    },
+  });
+
+  readonly #breadcrumb = inject(BreadcrumbService);
+  readonly #http = inject(HttpClient);
+  readonly #toast = inject(FlexiToastService);
+  readonly #location = inject(Location);
+  readonly #activated = inject(ActivatedRoute);
+
+  getCities() {
+    this.#http.get<any[]>('/il-ilce.json').subscribe((res) => {
+      this.cities.set(res);
+    });
+  }
+  getTowns(event: any) {
+    this.towns.set([]);
+    const town = this.cities().find((p) => p.il_adi === event);
+    if (town !== undefined) {
+      this.towns.set(town.ilceler);
+    }
   }
   save(form: NgForm) {
     if (form.valid) {
