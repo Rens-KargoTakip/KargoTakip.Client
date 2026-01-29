@@ -27,13 +27,16 @@ import { ResultModel } from '../../models/result.model';
 import { CommonModule } from '@angular/common';
 import { FlexiPopupModule } from 'flexi-popup';
 import { FlexiButtonComponent } from 'flexi-button';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   imports: [
+    FormsModule,
     RouterLink,
     FlexiGridModule,
     BlankComponent,
     FlexiButtonComponent,
+    FlexiPopupModule,
     CommonModule,
     FlexiPopupModule,
   ],
